@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker {
+        dockerContainer {
             image 'ray-jenkins-agent:latest' // or full registry path
         }
     }
