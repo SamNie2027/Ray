@@ -1,55 +1,65 @@
 import express from "express";
+import { userService } from "./services/user.service";
+import { authService } from "./services/auth.service";
+import { orgService } from "./services/org.service";
+
 const app = express();
 app.use(express.json());
 
 // USERS
-app.post("/users", (req, res) => {
-  // create user logic
-  res.json({ message: "User created (or error if exists)" });
+app.post("/users", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await userService.createUser(email, password);
+  res.json(user);
 });
 
-app.patch("/users/:id/preferences/location", (req, res) => {
+app.patch("/users/:id/preferences/location", async (req, res) => {
   const { id } = req.params;
-  res.json({ message: `Location preference updated for user ${id}` });
+  const { location } = req.body;
+  const result = await userService.changeLocationPref(Number(id), location);
+  res.json(result);
 });
 
-app.post("/users/:id/gives", (req, res) => {
+app.post("/users/:id/gives", async (req, res) => {
   const { id } = req.params;
-  res.json({ message: `Give added for user ${id}, streak updated` });
+  const result = await userService.addGive(Number(id));
+  res.json(result);
 });
 
-app.get("/users/:id/streak", (req, res) => {
+app.get("/users/:id/streak", async (req, res) => {
   const { id } = req.params;
-  res.json({ userId: id, streak: 7 }); // example stub
+  const result = await userService.getStreak(Number(id));
+  res.json(result);
 });
 
 // AUTH
-app.post("/auth/login", (req, res) => {
-  res.json({ message: "Login success (or error if bad credentials)" });
+app.post("/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const token = await authService.login(email, password);
+    res.json(token);
+  } catch (err) {
+    res.status(401).json({ error: err.message });
+  }
 });
 
 // PROGRESS
-app.get("/leaderboard", (req, res) => {
-  res.json([
-    { username: "Alice", streak: 12 },
-    { username: "Bob", streak: 10 },
-    { username: "Anonymous", streak: 8 }
-  ]);
+app.get("/leaderboard", async (req, res) => {
+  const leaderboard = await userService.getLeaderboard();
+  res.json(leaderboard);
 });
 
-// ORGANIZATIONS
-app.get("/orgs", (req, res) => {
-  const { limit } = req.query;
-  res.json({ message: `Returning ${limit || 10} orgs` });
+// ORGS
+app.get("/orgs", async (req, res) => {
+  const { limit = 10 } = req.query;
+  const orgs = await orgService.getOrgs(Number(limit));
+  res.json(orgs);
 });
 
-app.get("/orgs/:id", (req, res) => {
+app.get("/orgs/:id", async (req, res) => {
   const { id } = req.params;
-  res.json({ message: `Returning org with id ${id}` });
+  const org = await orgService.getSpecificOrg(Number(id));
+  res.json(org);
 });
 
-// SERVER
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+export default app;
