@@ -1,7 +1,7 @@
 import express from "express";
-import { userService } from "./services/user.service";
-import { authService } from "./services/auth.service";
-import { orgService } from "./services/org.service";
+import { userService } from "../services/user.service.ts";
+import { authService } from "../services/auth.service.ts";
+import { orgService } from "../services/org.service.ts";
 
 const app = express();
 app.use(express.json());

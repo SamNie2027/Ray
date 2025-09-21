@@ -1,0 +1,12 @@
+# From https://github.com/docker/awesome-compose/tree/master/react-express-mysql
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/code
+    working_dir: /code
+    command: node src/index.js
+    ports:
+      - 80:80
+      - 9229:9229
+      - 9230:9230
