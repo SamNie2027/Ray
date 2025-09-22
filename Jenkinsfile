@@ -1,7 +1,7 @@
 pipeline {
     agent {
         dockerContainer {
-            image 'ray-jenkins-agent:latest' // or full registry path
+            image 'sleavly/node-awscli:22.x' 
         }
     }
     
