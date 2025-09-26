@@ -1,5 +1,8 @@
+import { loginInput } from "../dtos/loginDTO";
+
 export class AuthService {
-  async login(email: string, password: string) {
+  async login(login: loginInput) {
+    { email, password } = login;
     if (email === "test@example.com" && password === "password123") {
       return { token: "fake-jwt-token" };
     }
