@@ -1,8 +1,8 @@
 import * as request from "supertest";
 const app = require("../app");
-import { userService } from "../services/user.service";
-import { authService } from "../services/auth.service";
-import { orgService } from "../services/org.service";
+import { userService } from "../src/services/user.service";
+import { authService } from "../src/services/auth.service";
+import { orgService } from "../src/services/org.service";
 
 jest.mock("../services/user.service");
 jest.mock("../services/auth.service");
