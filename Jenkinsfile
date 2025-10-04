@@ -1,3 +1,4 @@
+// Note: This Pipeline is a WIP but will likely be abandoned
 pipeline {
     agent {
         dockerContainer {

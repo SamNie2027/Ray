@@ -1,3 +1,5 @@
+// Note: While this file is functional, RDS compute is expensive. So please do not run unless you understand the costs.
+
 provider "aws" {
   region = "us-east-1"
 }
