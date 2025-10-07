@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from "./components/Layout"
+import ProtectedRoute  from "./components/ProtectedRoute"
+import { AuthProvider } from "./contexts/AuthContext"; 
 
 import Home from './pages/HomePage';
 
@@ -17,23 +19,49 @@ import Organizations from './pages/OrganizationPage';
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
 
-          {/* Non-protected pages */}
-          <Route index element={<Home />}/>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+            {/* Non-protected pages */}
+            <Route index element={<Home />}/>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
 
-          {/* Protected Pages */}
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="goals" element={<Goals />} />
-          <Route path="leaderboard" element={<Leaderboard />} />
-          <Route path="causes" element={<Causes />} />
-          <Route path="donations" element={<Donations />} />
-          <Route path="organizations" element={<Organizations />} />
-        </Route>
-      </Routes>
+            {/* Protected Pages */}
+            <Route path="dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="goals" element={
+              <ProtectedRoute>
+                <Goals />
+              </ProtectedRoute>
+              } />
+            <Route path="leaderboard" element={
+              <ProtectedRoute>
+                <Leaderboard />
+              </ProtectedRoute>
+              } />
+            <Route path="causes" element={
+              <ProtectedRoute>
+                <Causes />
+              </ProtectedRoute>
+              } />
+            <Route path="donations" element={
+              <ProtectedRoute>
+                <Donations />
+              </ProtectedRoute>
+            } />
+            <Route path="organizations" element={
+              <ProtectedRoute>
+                <Organizations />
+              </ProtectedRoute>
+            } />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
