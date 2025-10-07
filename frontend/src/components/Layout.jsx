@@ -10,7 +10,7 @@ function Layout() {
   const showFooter = isHomePage
 
   return (
-    <div className={containerClasses}>
+    <div>
       {/* <Navbar /> */}
       <main className="flex-grow">
         <Outlet />
