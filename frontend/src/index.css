@@ -1,2 +1,29 @@
 @import "tailwindcss";
 
+/* 
+    TODO: Import font
+*/
+
+.main-heading, .sub-heading {
+    font-family: "Bricolage Grotesque" , sans-serif;
+}
+
+.main-heading {
+    font-weight: bold;
+    font-size: 48px;
+}
+
+.sub-heading {
+    font-weight: 500;
+    font-size: 36px;
+}
+
+.small-heading {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+p {
+    font-size: 18px;
+    font-weight: lighter;
+}
