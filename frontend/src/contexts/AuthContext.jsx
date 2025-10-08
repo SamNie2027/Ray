@@ -30,14 +30,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   // POST /users
-  const signUp = async (email, password, name, username) => {
+  const signUp = async (email, password, name, giving_location_pref, username) => {
     setLoading(true);
     try {
       const res = await fetch('/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name, username }),
+        body: JSON.stringify({ email, password, name, giving_location_pref }),
       });
+
+      if(username) {
+        body.username = username;
+      }
 
       if (!res.ok) throw new Error('Registration failed');
       const data = await res.json();
