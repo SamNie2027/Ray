@@ -22,7 +22,7 @@ describe("API Endpoints (with mocked services)", () => {
       .post("/users")
       .send({ email: "test@example.com", password: "password123" });
 
-    expect(res.statusCode).toBe(200);
+  expect(res.statusCode).toBe(201);
     expect(res.body).toEqual({ id: 1, email: "test@example.com" });
     expect(userService.createUser).toHaveBeenCalledWith("test@example.com", "password123");
   });

@@ -2,15 +2,25 @@ const express = require('express');
 const { userService } = require('./services/user.service.ts');
 const { authService } = require('./services/auth.service.ts');
 const { orgService } = require('./services/org.service.ts');
+const { dbService } = require('./services/db.service.ts');
 
 const app = express();
 app.use(express.json());
 
 // USERS
 app.post('/users', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userService.createUser(email, password);
-  res.json(user);
+  const { email, password, name, username, giving_location_pref } = req.body;
+  try {
+    let created;
+    if (email && password && !name && !username && !giving_location_pref) {
+      created = await userService.createUser(email, password);
+    } else {
+      created = await userService.createUser({ email, password, name, username, giving_location_pref });
+    }
+    res.status(201).json(created);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 app.patch('/users/:id/preferences/location', async (req, res) => {
@@ -36,10 +46,16 @@ app.get('/users/:id/streak', async (req, res) => {
 app.post('/auth/login', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const token = await authService.login({ email, password });
-    res.json(token);
+    const loginResp = await authService.login({ email, password });
+    if (loginResp && typeof loginResp === 'object' && 'token' in loginResp) {
+      return res.json(loginResp);
+    }
+
+    const user = await dbService.getUserByEmail(email);
+    if (user && user.password) delete user.password;
+    res.json(user);
   } catch (err) {
-    res.status(401).json({ error: err.message });
+    res.status(404).json({ error: err.message });
   }
 });
 

@@ -1,3 +1,102 @@
+# Backend — Quickstart (for judges)
+
+This repo contains a Node/TypeScript Express backend that uses MySQL (local or Docker). The steps below get you from zero → running tests in under a minute.
+
+TL;DR — fastest path
+
+1. Start MySQL (Docker):
+
+```bash
+# from repo root (where compose.yaml lives)
+docker compose up -d mysql
+```
+
+2. Run migrations and start server (optional):
+
+```bash
+cd backend
+# apply DB schema + seed data
+npm run migrate
+
+# start the backend (optional)
+node src/index.js
+```
+
+3. Run tests (unit + integration):
+
+```bash
+# unit tests
+cd backend
+npm test
+
+# integration tests (runs migrations and checks DB) — requires MySQL reachable
+INTEGRATION=1 npm run test:integration
+```
+
+What the integration test does
+
+- Probes `DB_HOST:DB_PORT` quickly. If unreachable it tries `127.0.0.1` and will skip the test if still unreachable.
+- Runs the migration script to ensure schema and seed data exist.
+- Verifies `users` and `orgs` tables contain seed rows.
+
+Useful commands
+
+- Run migrations only:
+
+```bash
+cd backend
+npm run migrate
+```
+
+- Run backend server locally (reads `backend/.env`):
+
+```bash
+cd backend
+node src/index.js
+```
+
+Sample API (after starting server on port 80)
+
+- Sign up (returns created user):
+
+POST http://localhost/users
+Content-Type: application/json
+
+Body:
+{
+  "email": "judge@example.com",
+  "password": "password123",
+  "name": "Judge",
+  "username": "judge1",
+  "giving_location_pref": "online"
+}
+
+- Login (returns token and user):
+
+POST http://localhost/auth/login
+Content-Type: application/json
+
+Body:
+{
+  "email": "judge@example.com",
+  "password": "password123"
+}
+
+Response:
+{
+  "token": "...",
+  "user": { "id": 1, "email": "judge@example.com", "name": "Judge", ... }
+}
+
+Notes for judges
+
+- The backend currently uses plaintext passwords for local/dev convenience. Do not use these credentials for real accounts.
+- If you need the server logs, run the server with `node src/index.js` and check the terminal output.
+- If you prefer not to use Docker, set `DB_HOST=127.0.0.1` in `backend/.env` and point it to a local MySQL instance.
+
+Contact
+
+If you run into issues, open an issue in the repo or contact the team lead in the repo metadata.
 # Backend — local development & integration tests
 
 This file documents quick steps to run the local MySQL, apply migrations, and run the integration tests that exercise the real database.
