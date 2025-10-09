@@ -1,3 +1,60 @@
+# Backend — local development & integration tests
+
+This file documents quick steps to run the local MySQL, apply migrations, and run the integration tests that exercise the real database.
+
+## Prerequisites
+
+- Docker & Docker Compose (if running MySQL in a container)
+- Node 18+ and npm
+- A copy of `backend/.env` (there is a `.env.example` in the repo)
+
+## Start a local MySQL (recommended)
+
+From the repository root (where `compose.yaml` lives) you can start the MySQL service defined in the compose file:
+
+```bash
+docker compose up -d mysql
+```
+
+Give MySQL a few seconds to initialize the data directory and create the seed rows.
+
+By default `backend/.env` sets `DB_HOST=mysql` which is correct when you run via the compose network. If you run the DB on your host machine use `DB_HOST=127.0.0.1` instead.
+
+## Run migrations
+
+The repository includes a small migration runner which executes `backend/create_tables.sql` against the configured MySQL instance.
+
+From the `backend/` folder:
+
+```bash
+# run migrations using the .env file in backend/
+npm run migrate
+```
+
+This calls `node ./scripts/runMigrations.cjs` which reads `backend/.env` and executes the SQL (it uses `multipleStatements=true`).
+
+## Integration tests (fast, safe)
+
+Integration tests are intentionally gated so they won't run in normal unit-test runs. They only run when `INTEGRATION=1` is set.
+
+- Run the integration tests (recommended to run after starting MySQL with the compose command above):
+
+```bash
+npm run test:integration
+```
+
+What the integration test does
+- Probes `DB_HOST:DB_PORT` quickly; if unreachable it will try `127.0.0.1`.
+- Runs the migration script (with a timeout) to ensure the schema and seed data are present.
+- Dynamically creates the DB pool (so the test's chosen `DB_HOST` is used) and asserts that `users` and `orgs` have seed rows.
+
+Notes & troubleshooting
+- If you see `Integration DB not reachable` the test will skip quickly — ensure MySQL is started and reachable from the environment where tests run.
+- If your Compose service is named differently or you don't use Docker, make sure `backend/.env` points to the right host. When running via compose the host should be `mysql` (the container name); when running against a local MySQL use `127.0.0.1`.
+- If migrations are slow or the container is initializing, the test will skip instead of hanging (this is intentional to keep CI stable). You can run `npm run migrate` manually and then run the integration test.
+
+CI recommendation
+- In CI, run the MySQL service, wait until it is healthy, then run `npm run test:integration`. Ensure `DB_HOST` resolves from the CI environment (often `127.0.0.1` is easiest).
 Backend - Local development and migrations
 
 This README explains how to run the local MySQL container, create the database schema, and start the backend for development.

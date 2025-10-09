@@ -1,5 +1,5 @@
 import * as request from "supertest";
-const app = require("../app");
+const app = require("../app.cjs");
 import { userService } from "../src/services/user.service";
 import { authService } from "../src/services/auth.service";
 import { orgService } from "../src/services/org.service";

@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+  "test": "jest",
     "migrate": "node ./scripts/runMigrations.cjs"
+  ,
+  "test:integration": "INTEGRATION=1 jest __tests__/integration --runInBand"
 
   },
   "keywords": [],
