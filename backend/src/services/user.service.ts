@@ -1,5 +1,6 @@
 import { leaderboardOutput } from "../dtos/leaderboardDTO";
 import { NewUserInput } from "../dtos/newUserDTO";
+import { dbService } from "./db.service";
 
 type CreatedUser = { id: number; email: string };
 
@@ -12,11 +13,23 @@ export class UserService {
       throw new Error("Missing required user fields");
     }
 
-    // TODO: Insert the user into your DB using your chosen SDK/ORM and return the created record.
-    // e.g. const created = await db.users.create({ data: { ...user } });
+    // Insert into the users table. We expect a column `password_hash` so caller should provide a hashed
+    // password in `user.password` for production; for local testing this may be plain text.
+    const sql = `INSERT INTO users (name, email, username, password_hash, giving_location_pref, created_at, updated_at)
+                 VALUES (?, ?, ?, ?, ?, NOW(), NOW())`;
+    const params = [user.name, user.email, user.username || null, user.password, user.giving_location_pref];
 
-    // For now, return a stubbed created user object (keeps tests passing)
-    const created = { id: 1, email: user.email };
+    const resp: any = await dbService.executeSql({ sql, parameters: params });
+
+    // mysql2's execute returns an OkPacket as part of the result when running INSERT via pool.execute.
+    // Our dbService.executeSql returns { records, columnMetadata } for compatibility; when using INSERT
+    // we can query the inserted id with LAST_INSERT_ID(). Simpler: run a follow-up select using the email.
+    const lookup = `SELECT id, email FROM users WHERE email = ? LIMIT 1`;
+    const look = await dbService.executeSql({ sql: lookup, parameters: [user.email] }) as any;
+    const rows: any[] = Array.isArray(look?.records) ? look.records : [];
+    if (rows.length === 0) throw new Error('User insert failed');
+
+    const created = { id: rows[0].id, email: rows[0].email };
     return created;
   }
 
