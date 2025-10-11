@@ -17,6 +17,7 @@ import Streak from './pages/StreakPage';
 import Causes from './pages/CausesPage';
 import Donations from './pages/DonationPage';
 import Organizations from './pages/OrganizationPage';
+import Success from './pages/SuccessPage';
 
 function App() {
   return (
@@ -69,6 +70,11 @@ function App() {
             <Route path="organizations" element={
               <ProtectedRoute>
                 <Organizations />
+              </ProtectedRoute>
+            } />
+            <Route path="success" element={
+              <ProtectedRoute>
+                <Success />
               </ProtectedRoute>
             } />
           </Route>
