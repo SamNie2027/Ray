@@ -14,26 +14,7 @@ const SuccessPage = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8F8F8' }}>
-      {/* Header */}
-      <div className="h-16 flex items-center px-6" style={{ backgroundColor: '#E06B3D' }}>
-        <div className="w-8 h-8 flex items-center justify-center">
-          {/* Heart with hands icon */}
-          <div className="relative w-6 h-6">
-            {/* Heart shape - yellow */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-yellow-400 rounded-full"></div>
-            <div className="absolute top-0 right-0 w-3 h-3 bg-yellow-400 rounded-full"></div>
-            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 rotate-45 w-3 h-4 bg-yellow-400"></div>
-            
-            {/* Two yellow hands underneath the heart */}
-            <div className="absolute top-3 left-1/2 transform -translate-x-1/2 flex space-x-0.5">
-              <div className="w-1 h-1.5 bg-yellow-400 rounded-full transform rotate-12"></div>
-              <div className="w-1 h-1.5 bg-yellow-400 rounded-full transform -rotate-12"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div className="min-h-screen mt-18" style={{ backgroundColor: '#F8F8F8' }}>
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center min-h-screen px-6 py-8">
         {/* Success Icon */}
@@ -43,9 +24,10 @@ const SuccessPage = () => {
             style={{ backgroundColor: '#2D8B9C' }}
           >
             {/* White Checkmark */}
-            <div className="relative w-16 h-16">
-              <div className="absolute top-1/2 left-1/4 w-8 h-1 bg-white transform rotate-45 origin-left"></div>
-              <div className="absolute top-1/2 left-1/4 w-4 h-1 bg-white transform -rotate-45 origin-left"></div>
+            <div className="relative text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+              </svg>
             </div>
           </div>
         </div>

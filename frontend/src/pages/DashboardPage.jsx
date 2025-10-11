@@ -1,6 +1,6 @@
 const Dashboard = () => {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8F8F8' }}>
+    <div className="mt-18 min-h-screen" style={{ backgroundColor: '#F8F8F8' }}>
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Title Section */}
@@ -48,39 +48,34 @@ const Dashboard = () => {
           <p className="text-black mb-6">Choose a cause or organization to start donating with us</p>
           
           {/* Donation Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* TODO: Add Images */}
+          <div className="flex flex-wrap">
             {/* The Salvation Army Card */}
-            <div className="rounded-lg p-6 text-center" style={{ backgroundColor: '#F0F0F0' }}>
-              <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                  {/* Image */}
+              <div className="w-20 h-20 mx-auto">
+                  <img
+                    src="/dashboard/the-salvation-army.png"
+                  />
               </div>
-              <h3 className="font-semibold text-black">The Salvation Army</h3>
-            </div>
 
             {/* UNICEF Card */}
-            <div className="rounded-lg p-6 text-center" style={{ backgroundColor: '#F0F0F0' }}>
-              <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                  {/* Image */}
-              </div>
-              <h3 className="font-semibold text-black">Unicef</h3>
+            <div className="w-20 h-20 mx-auto">
+                <img
+                  src="/dashboard/unicef.png"
+                />
             </div>
 
             {/* Food and Poverty Card */}
-            <div className="rounded-lg p-6 text-center relative overflow-hidden" style={{ backgroundColor: '#F0F0F0' }}>
-                <div className="w-20 h-20 mb-4 flex items-center justify-center">
-                  {/* Image */}
-                </div>
-                <h3 className="font-bold text-white">Food and Poverty</h3>
-            </div>
+              <div className="w-20 h-20 mx-auto">
+                <img
+                  src="/dashboard/food-and-poverty.png"
+                />
+              </div>
 
             {/* Clothing Card */}
-            <div className="rounded-lg p-6 text-center relative overflow-hidden" style={{ backgroundColor: '#F0F0F0' }}>
-                <div className="w-20 h-20 mb-4 flex items-center justify-center">
-                  {/* Image */}
-                </div>
-                <h3 className="font-bold text-white">Clothing</h3>
-            </div>
+              <div className="w-20 h-20 mx-auto">
+                <img
+                  src="/dashboard/clothing.png"
+                />
+              </div>
           </div>
         </div>
       </div>

@@ -37,17 +37,7 @@ const AccountDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <div className="bg-orange-500 w-full py-6 px-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-white">Ray</h1>
-          <div className="text-white">
-            <Menu className="w-6 h-6" />
-          </div>
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-gray-100 mt-18">
       {/* Main Content */}
       <div className="flex flex-col items-center px-4 sm:px-6 py-8 sm:py-12">
         <div className="w-full max-w-2xl">

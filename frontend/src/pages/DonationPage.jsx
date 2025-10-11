@@ -1,15 +1,43 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ProgressTracker from '../components/ProgressTracker';
 
-const Donation = () => {
+const DonationPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedCause, selectedOrganization } = location.state || {};
-  const [donationAmount, setDonationAmount] = useState(5);
+  
+  const [formData, setFormData] = useState({
+    // Donation section
+    organizationName: selectedOrganization?.name || 'The Marine Mammal Center',
+    donationCause: selectedCause?.name || 'Animal Welfare',
+    donationAmount: '',
+    
+    // Personal Information section
+    fullName: 'John Alexander Smith',
+    emailAddress: 'ray.example@email.com',
+    phoneNumber: '+000 (123) 456-7890',
+    city: 'New York City',
+    zipCode: '11000',
+    country: 'United States of America',
+    
+    // Payment Information section
+    nameOnCard: 'John',
+    cardNumber: '0000 0000 0000 0000',
+    expirationDate: '00/00',
+    cvv: '000'
+  });
+
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleDonationSubmit = async (e) => {
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
     
@@ -19,139 +47,452 @@ const Donation = () => {
         state: { 
           selectedCause,
           selectedOrganization,
-          donationAmount 
+          donationAmount: formData.donationAmount,
+          formData
         } 
       });
     }, 2000);
   };
 
-  const quickAmounts = [5, 10, 25, 50, 100];
-
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8F8F8' }}>
-      {/* Header */}
-      <div className="h-16 flex items-center px-6" style={{ backgroundColor: '#E06B3D' }}>
-        <div className="w-8 h-8 flex items-center justify-center">
-          {/* Heart with hands icon */}
-          <div className="relative w-6 h-6">
-            {/* Heart shape - yellow */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-yellow-400 rounded-full"></div>
-            <div className="absolute top-0 right-0 w-3 h-3 bg-yellow-400 rounded-full"></div>
-            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 rotate-45 w-3 h-4 bg-yellow-400"></div>
-            
-            {/* Two yellow hands underneath the heart */}
-            <div className="absolute top-3 left-1/2 transform -translate-x-1/2 flex space-x-0.5">
-              <div className="w-1 h-1.5 bg-yellow-400 rounded-full transform rotate-12"></div>
-              <div className="w-1 h-1.5 bg-yellow-400 rounded-full transform -rotate-12"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div className="min-h-screen m-18" style={{ backgroundColor: '#F8F8F8' }}>
       {/* Progress Tracker */}
       <ProgressTracker currentStep={3} />
 
       {/* Main Content */}
-      <div className="max-w-2xl mx-auto px-6 py-8">
-        {/* Title Section */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {/* Form Title */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-black mb-4">Payment</h1>
-          <p className="text-lg text-black">Complete your donation</p>
+          <h1 
+            className="text-4xl font-bold text-black mb-4"
+            style={{ 
+              fontFamily: 'Bricolage Grotesque, sans-serif'
+            }}
+          >
+            Donation Form
+          </h1>
+          <p 
+            className="text-lg text-black"
+            style={{ 
+              fontFamily: 'Inter, sans-serif'
+            }}
+          >
+            Let us know more to continue processing your donation
+          </p>
         </div>
 
-        {/* Donation Summary */}
-        {selectedCause && selectedOrganization && (
-          <div className="bg-white rounded-lg p-6 mb-8 shadow-sm">
-            <h3 className="text-xl font-semibold text-black mb-4">Donation Summary</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Cause:</span>
-                <span className="text-black font-medium">{selectedCause.name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Organization:</span>
-                <span className="text-black font-medium">{selectedOrganization.name}</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Payment Form */}
-        <form onSubmit={handleDonationSubmit} className="bg-white rounded-lg p-6 shadow-sm">
-          <h3 className="text-xl font-semibold text-black mb-6">Payment Details</h3>
+        {/* Donation Form */}
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-8">
           
-          {/* Donation Amount */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Donation Amount
-            </label>
-            <div className="grid grid-cols-5 gap-2 mb-4">
-              {quickAmounts.map((amount) => (
-                <button
-                  key={amount}
-                  type="button"
-                  onClick={() => setDonationAmount(amount)}
-                  className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
-                    donationAmount === amount
-                      ? 'bg-orange-500 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+          {/* Donation Section */}
+          <div className="mb-8">
+            <h2 
+              className="text-2xl font-bold text-black mb-2"
+              style={{ 
+                fontFamily: 'Bricolage Grotesque, sans-serif'
+              }}
+            >
+              Donation
+            </h2>
+            <p 
+              className="text-gray-600 mb-6"
+              style={{ 
+                fontFamily: 'Inter, sans-serif'
+              }}
+            >
+              Tell us where you would like to donate
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Organization Name */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
                 >
-                  ${amount}
-                </button>
-              ))}
+                  Organization Name
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.organizationName}
+                    onChange={(e) => handleInputChange('organizationName', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Donation Cause */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Donation Cause
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.donationCause}
+                    onChange={(e) => handleInputChange('donationCause', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 space-x-1">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Donation Amount */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Donation Amount
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={formData.donationAmount}
+                    onChange={(e) => handleInputChange('donationAmount', e.target.value)}
+                    placeholder="Enter amount"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-16"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <span 
+                      className="text-gray-500 text-sm mr-2"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
+                      USD
+                    </span>
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
-            <input
-              type="number"
-              value={donationAmount}
-              onChange={(e) => setDonationAmount(Number(e.target.value))}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="Enter custom amount"
-              min="1"
-            />
           </div>
 
-          {/* Payment Method */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Payment Method
-            </label>
-            <div className="space-y-3">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="card"
-                  defaultChecked
-                  className="mr-3 text-orange-500 focus:ring-orange-500"
-                />
-                <span className="text-gray-700">Credit/Debit Card</span>
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="paypal"
-                  className="mr-3 text-orange-500 focus:ring-orange-500"
-                />
-                <span className="text-gray-700">PayPal</span>
-              </label>
+          {/* Personal Information Section */}
+          <div className="mb-8">
+            <h2 
+              className="text-2xl font-bold text-black mb-2"
+              style={{ 
+                fontFamily: 'Bricolage Grotesque, sans-serif'
+              }}
+            >
+              Personal Information
+            </h2>
+            <p 
+              className="text-gray-600 mb-6"
+              style={{ 
+                fontFamily: 'Inter, sans-serif'
+              }}
+            >
+              Tell us more about who is donating
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Full Name */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Full Name
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Email Address */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Email Address
+                </label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    value={formData.emailAddress}
+                    onChange={(e) => handleInputChange('emailAddress', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Phone Number */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    value={formData.phoneNumber}
+                    onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* City */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  City
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.city}
+                    onChange={(e) => handleInputChange('city', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Zip Code */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Zip Code
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.zipCode}
+                    onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Country */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Country
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.country}
+                    onChange={(e) => handleInputChange('country', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Information Section */}
+          <div className="mb-8">
+            <h2 
+              className="text-2xl font-bold text-black mb-2"
+              style={{ 
+                fontFamily: 'Bricolage Grotesque, sans-serif'
+              }}
+            >
+              Payment Information
+            </h2>
+            <p 
+              className="text-gray-600 mb-6"
+              style={{ 
+                fontFamily: 'Inter, sans-serif'
+              }}
+            >
+              How will you be donating with us?
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Name on Card */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Name on Card
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.nameOnCard}
+                    onChange={(e) => handleInputChange('nameOnCard', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Number */}
+              <div className="md:col-span-2">
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Card Number
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.cardNumber}
+                    onChange={(e) => handleInputChange('cardNumber', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-20"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 space-x-1">
+                    {/* Credit Card Icons */}
+                    <img
+                      src="/cards.png"
+                      className='w-16'
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Expiration Date */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  Expiration Date
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.expirationDate}
+                    onChange={(e) => handleInputChange('expirationDate', e.target.value)}
+                    placeholder="MM/YY"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* CVV */}
+              <div>
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                >
+                  CVV
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.cvv}
+                    onChange={(e) => handleInputChange('cvv', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isProcessing}
-            className="w-full py-4 px-6 rounded-lg text-white font-semibold text-lg hover:opacity-90 transition-opacity disabled:opacity-50"
-            style={{ backgroundColor: '#E06B3D' }}
-          >
-            {isProcessing ? 'Processing...' : `Donate $${donationAmount}`}
-          </button>
+          <div className="text-center">
+            <button
+              type="submit"
+              disabled={isProcessing}
+              className="px-12 py-4 rounded-lg text-white font-semibold text-lg transition-all duration-200 hover:opacity-90 disabled:opacity-50"
+              style={{ 
+                backgroundColor: '#E06B3D',
+                fontFamily: 'Inter, sans-serif'
+              }}
+            >
+              {isProcessing ? 'Processing...' : 'Confirm Donation'}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 };
 
-export default Donation;
+export default DonationPage;

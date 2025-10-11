@@ -58,12 +58,7 @@ const Goals = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <div className="bg-orange-500 w-full py-6 px-6">
-        <h1 className="text-3xl font-bold text-white">Ray</h1>
-      </div>
-
+    <div className="min-h-screen bg-gray-100 mt-18">
       {/* Main Content */}
       <div className="flex flex-col items-center px-4 sm:px-6 py-8 sm:py-12 space-y-12 sm:space-y-16">
         
@@ -129,7 +124,7 @@ const Goals = () => {
 
       {/* Custom Goal Modal */}
       {showCustomModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 backdrop-blur-sm bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold text-gray-800">Create Custom Goal</h3>

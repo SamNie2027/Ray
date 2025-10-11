@@ -17,26 +17,7 @@ const StreakPage = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8F8F8' }}>
-      {/* Header */}
-      <div className="h-16 flex items-center px-6" style={{ backgroundColor: '#E06B3D' }}>
-        <div className="w-8 h-8 flex items-center justify-center">
-          {/* Heart with hands icon - more accurate to Figma */}
-          <div className="relative w-6 h-6">
-            {/* Heart shape - yellow */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-yellow-400 rounded-full"></div>
-            <div className="absolute top-0 right-0 w-3 h-3 bg-yellow-400 rounded-full"></div>
-            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 rotate-45 w-3 h-4 bg-yellow-400"></div>
-            
-            {/* Two yellow hands underneath the heart */}
-            <div className="absolute top-3 left-1/2 transform -translate-x-1/2 flex space-x-0.5">
-              <div className="w-1 h-1.5 bg-yellow-400 rounded-full transform rotate-12"></div>
-              <div className="w-1 h-1.5 bg-yellow-400 rounded-full transform -rotate-12"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div className="min-h-screen mt-18" style={{ backgroundColor: '#F8F8F8' }}>
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center min-h-screen px-6 py-8">
         {/* Central Celebration Graphic */}
@@ -72,7 +53,7 @@ const StreakPage = () => {
 
         {/* Main Heading */}
         <h1 className="text-4xl font-bold text-black mb-4 text-center">
-          You have a 5 day streak
+          You have a 1 day streak
         </h1>
 
         {/* Sub-text */}

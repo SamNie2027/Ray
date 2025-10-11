@@ -5,27 +5,23 @@ const HomePage = () => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white text-black">
       {/* Hero Section */}
+
       <section className="relative overflow-hidden">
         {/* Background Gradient */}
         <div 
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(180deg, #E06B3D 0%, #FED7AA 50%, #E5E7EB 100%)'
+            background: 'linear-gradient(180deg, #BF5334 0%, #fffff 50%)'
           }}
         ></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
-            {/* Logo */}
-            <div className="flex justify-center mb-8">
-             
-            </div>
-            
             {/* Main Heading */}
             <h1 
-              className="text-5xl md:text-6xl font-bold text-white mb-6"
+              className="text-4xl md:text-6xl font-bol mt-10 mb-8"
               style={{ 
                 fontFamily: 'Bricolage Grotesque, sans-serif',
                 fontSize: 'clamp(36px, 8vw, 64px)'
@@ -36,14 +32,13 @@ const HomePage = () => {
             
             {/* Subheading */}
             <p 
-              className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto"
+              className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontSize: 'clamp(18px, 4vw, 24px)'
               }}
             >
               Join our community of changemakers and start your giving streak today. 
-              Every donation counts, every day matters.
             </p>
             
             {/* CTA Buttons */}
@@ -58,7 +53,7 @@ const HomePage = () => {
                       fontFamily: 'Inter, sans-serif'
                     }}
                   >
-                    Go to Dashboard
+                    Dashboard
                   </Link>
                   <Link
                     to="/causes"
@@ -120,7 +115,7 @@ const HomePage = () => {
                 fontSize: 'clamp(16px, 3vw, 20px)'
               }}
             >
-              We make giving simple, trackable, and rewarding
+              We make giving simple and trackable
             </p>
           </div>
 
