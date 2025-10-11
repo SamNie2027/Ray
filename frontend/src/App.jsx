@@ -12,7 +12,7 @@ import AccountDetail from './pages/AccountDetail';
 import Dashboard from './pages/DashboardPage';
 import Goals from './pages/GoalsPage';
 import Leaderboard from './pages/LeaderboardPage';
-import Streak from './pages/StreakPage';
+import Streak from './pages/SteakPage';
 
 import Causes from './pages/CausesPage';
 import Donations from './pages/DonationPage';
