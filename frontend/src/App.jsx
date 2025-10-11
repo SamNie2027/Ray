@@ -7,6 +7,7 @@ import Home from './pages/HomePage';
 
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
+import AccountDetail from './pages/AccountDetail';
 
 import Dashboard from './pages/DashboardPage';
 import Goals from './pages/GoalsPage';
@@ -32,6 +33,11 @@ function App() {
             <Route path="dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="account" element={
+              <ProtectedRoute>
+                <AccountDetail />
               </ProtectedRoute>
             } />
             <Route path="goals" element={
