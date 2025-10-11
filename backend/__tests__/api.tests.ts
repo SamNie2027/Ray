@@ -1,12 +1,14 @@
 import * as request from "supertest";
-const app = require("../app");
+const app = require("../app.cjs");
 import { userService } from "../src/services/user.service";
 import { authService } from "../src/services/auth.service";
 import { orgService } from "../src/services/org.service";
+import type { loginInput } from "../src/dtos/loginDTO";
+import type { leaderboardOutput } from "../src/dtos/leaderboardDTO";
 
-jest.mock("../services/user.service");
-jest.mock("../services/auth.service");
-jest.mock("../services/org.service");
+jest.mock("../src/services/user.service");
+jest.mock("../src/services/auth.service");
+jest.mock("../src/services/org.service");
 
 describe("API Endpoints (with mocked services)", () => {
   beforeEach(() => {
@@ -20,7 +22,7 @@ describe("API Endpoints (with mocked services)", () => {
       .post("/users")
       .send({ email: "test@example.com", password: "password123" });
 
-    expect(res.statusCode).toBe(200);
+  expect(res.statusCode).toBe(201);
     expect(res.body).toEqual({ id: 1, email: "test@example.com" });
     expect(userService.createUser).toHaveBeenCalledWith("test@example.com", "password123");
   });
@@ -28,25 +30,31 @@ describe("API Endpoints (with mocked services)", () => {
   it("should login a user", async () => {
     (authService.login as jest.Mock).mockResolvedValue({ token: "fake-jwt-token" });
 
+    const loginPayload: loginInput = { email: "test@example.com", password: "password123" };
+
     const res = await request(app)
       .post("/auth/login")
-      .send({ email: "test@example.com", password: "password123" });
+      .send(loginPayload);
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({ token: "fake-jwt-token" });
   });
 
   it("should return leaderboard data", async () => {
-    (userService.getLeaderboard as jest.Mock).mockResolvedValue([
-      { username: "Alice", streak: 12 },
-      { username: "Bob", streak: 10 }
-    ]);
+    const leaderboardMock: leaderboardOutput = {
+      leaderboard: [
+        { displayname: "Alice", streak: 12 },
+        { displayname: "Bob", streak: 10 }
+      ]
+    };
+
+    (userService.getLeaderboard as jest.Mock).mockResolvedValue(leaderboardMock);
 
     const res = await request(app).get("/leaderboard");
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveLength(2);
-    expect(res.body[0]).toHaveProperty("username", "Alice");
+    expect(res.body.leaderboard).toHaveLength(2);
+    expect(res.body.leaderboard[0]).toHaveProperty("displayname", "Alice");
   });
 
   it("should return orgs list", async () => {

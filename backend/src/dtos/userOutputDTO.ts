@@ -1,6 +1,7 @@
 import { GivingLocationPrefType } from "./newUserDTO";
 
 export type userOutput = {
+    id: number;
     name: string;
     email: string;
     password: string;

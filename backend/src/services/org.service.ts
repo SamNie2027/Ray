@@ -1,13 +1,14 @@
+import { dbService } from './db.service';
+
 export class OrgService {
   async getOrgs(limit: number) {
-    return Array.from({ length: limit }, (_, i) => ({
-      id: i + 1,
-      name: `Org ${i + 1}`
-    }));
+    const rows = await dbService.getOrgs(limit || 10);
+    return rows;
   }
 
   async getSpecificOrg(orgId: number) {
-    return { id: orgId, name: `Org ${orgId}` };
+    const org = await dbService.getOrgById(orgId);
+    return org;
   }
 }
 
