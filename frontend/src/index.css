@@ -27,3 +27,29 @@ p {
     font-size: 18px;
     font-weight: lighter;
 }
+
+/* Goals page specific styles */
+.goal-button {
+    transition: all 0.2s ease-in-out;
+}
+
+.goal-button:hover {
+    transform: scale(1.05);
+}
+
+.goal-button.selected {
+    box-shadow: 0 0 0 2px #f97316, 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+/* Custom colors for goal options */
+.bg-yellow-200 {
+    background-color: #fef3c7;
+}
+
+.bg-pink-200 {
+    background-color: #fce7f3;
+}
+
+.bg-teal-200 {
+    background-color: #ccfbf1;
+}
