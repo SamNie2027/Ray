@@ -15,12 +15,16 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white sticky top-0 z-50">
+    <nav className="bg-transparent fixed inset-x-0 top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        
         {/* Left: Logo */}
         <div>
           <Link to="/" className="text-white sub-heading">
-            Ray
+            <img
+              src="/logo.png"
+              className="w-14"
+            />
           </Link>
         </div>
 
@@ -49,7 +53,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="font-medium"
+                className="font-medium text-black"
               >
                 Login
               </Link>
