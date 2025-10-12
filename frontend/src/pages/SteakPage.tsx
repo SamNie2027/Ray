@@ -1,7 +1,37 @@
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { getUserStreak } from '../api/leaderboard';
 
 const StreakPage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [streak, setStreak] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchUserStreak();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const fetchUserStreak = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const streakData = await getUserStreak(user.id);
+      setStreak(streakData.streak || 0);
+    } catch (err) {
+      setError('Failed to load streak data');
+      console.error('Error fetching user streak:', err);
+      setStreak(0); // Fallback to 0
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleShareProgress = () => {
     // TODO: Implement share functionality
@@ -31,16 +61,22 @@ const StreakPage = () => {
           
           {/* Large number 1 with teal color and subtle glow */}
           <div className="relative">
-            <div 
-              className="text-9xl font-bold text-center"
-              style={{ 
-                color: '#14B8A6',
-                textShadow: '0 0 15px rgba(20, 184, 166, 0.4)',
-                filter: 'drop-shadow(0 0 8px rgba(20, 184, 166, 0.2))'
-              }}
-            >
-              1
-            </div>
+            {loading ? (
+              <div className="text-9xl font-bold text-center">
+                <div className="animate-spin rounded-full h-24 w-24 border-b-4 border-teal-500 mx-auto"></div>
+              </div>
+            ) : (
+              <div 
+                className="text-9xl font-bold text-center"
+                style={{ 
+                  color: '#14B8A6',
+                  textShadow: '0 0 15px rgba(20, 184, 166, 0.4)',
+                  filter: 'drop-shadow(0 0 8px rgba(20, 184, 166, 0.2))'
+                }}
+              >
+                {streak}
+              </div>
+            )}
           </div>
           
           {/* Right hand - yellow emoji style */}
@@ -53,7 +89,7 @@ const StreakPage = () => {
 
         {/* Main Heading */}
         <h1 className="text-4xl font-bold text-black mb-4 text-center">
-          You have a 1 day streak
+          {loading ? 'Loading your streak...' : error ? 'Unable to load streak' : `You have a ${streak} day streak`}
         </h1>
 
         {/* Sub-text */}

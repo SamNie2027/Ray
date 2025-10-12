@@ -1,34 +1,53 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ProgressTracker from '../components/ProgressTracker';
+import { useAuth } from '../contexts/AuthContext';
 
 const DonationPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
   const { selectedCause, selectedOrganization } = location.state || {};
   
   const [formData, setFormData] = useState({
     // Donation section
-    organizationName: selectedOrganization?.name || 'The Marine Mammal Center',
-    donationCause: selectedCause?.name || 'Animal Welfare',
+    organizationName: '',
+    donationCause: '',
     donationAmount: '',
     
     // Personal Information section
-    fullName: 'John Alexander Smith',
-    emailAddress: 'ray.example@email.com',
-    phoneNumber: '+000 (123) 456-7890',
-    city: 'New York City',
-    zipCode: '11000',
-    country: 'United States of America',
+    fullName: '',
+    emailAddress: '',
+    phoneNumber: '',
+    city: '',
+    zipCode: '',
+    country: '',
     
     // Payment Information section
-    nameOnCard: 'John',
+    nameOnCard: '',
     cardNumber: '0000 0000 0000 0000',
     expirationDate: '00/00',
     cvv: '000'
   });
 
   const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        organizationName: selectedOrganization?.name || 'The Marine Mammal Center',
+        donationCause: selectedCause?.name || 'Animal Welfare',
+        fullName: user.name || user.displayname || 'User Name',
+        emailAddress: user.email || 'user@email.com',
+        phoneNumber: user.phone || '+000 (123) 456-7890',
+        city: user.city || 'New York City',
+        zipCode: user.zipCode || '11000',
+        country: user.country || 'United States of America',
+        nameOnCard: user.name || user.displayname || 'User'
+      }));
+    }
+  }, [user, selectedCause, selectedOrganization]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({

@@ -1,4 +1,36 @@
+import { useAuth } from '../contexts/AuthContext';
+import { getUserStreak } from '../api/leaderboard';
+import { useState, useEffect } from 'react';
+
 const Dashboard = () => {
+  const { user } = useAuth();
+  const [streak, setStreak] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchUserStreak();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const fetchUserStreak = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const streakData = await getUserStreak(user.id);
+      setStreak(streakData.streak || 0);
+    } catch (err) {
+      setError('Failed to load streak data');
+      console.error('Error fetching user streak:', err);
+      setStreak(0); // Fallback to 0
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="mt-18 min-h-screen" style={{ backgroundColor: '#F8F8F8' }}>
       {/* Main Content */}
@@ -13,11 +45,17 @@ const Dashboard = () => {
         <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: '#F0F0F0' }}>
           <div className="flex items-center mb-4">
             <div className="w-16 h-16 rounded-full flex items-center justify-center mr-4" style={{ backgroundColor: '#C0C0C0' }}>
-              <span className="text-white font-bold text-2xl">0</span>
+              {loading ? (
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+              ) : (
+                <span className="text-white font-bold text-2xl">{streak}</span>
+              )}
             </div>
             <div>
               <h2 className="text-2xl font-bold text-black">day streak</h2>
-              <p className="text-black">start donating with us to start your giving streak.</p>
+              <p className="text-black">
+                {error ? 'Unable to load streak data' : 'start donating with us to start your giving streak.'}
+              </p>
             </div>
           </div>
           <button className="text-white font-bold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity" style={{ backgroundColor: '#E06B3D' }}>
@@ -33,11 +71,17 @@ const Dashboard = () => {
           {/* Progress Bar */}
           <div className="mb-4">
             <div className="w-full h-4 rounded-full" style={{ backgroundColor: '#C0C0C0' }}>
-              <div className="h-4 rounded-full" style={{ backgroundColor: '#E06B3D', width: '2%' }}></div>
+              <div 
+                className="h-4 rounded-full" 
+                style={{ 
+                  backgroundColor: '#E06B3D', 
+                  width: `${Math.min((streak * 10), 100)}%` // Dynamic progress based on streak
+                }}
+              ></div>
             </div>
             <div className="flex justify-between text-sm text-black mt-2">
-              <span>$0/$100</span>
-              <span>0 days left</span>
+               <span>${streak * 10}/$100</span>
+              <span>{Math.max(0, 10 - streak)} days left</span>
             </div>
           </div>
         </div>

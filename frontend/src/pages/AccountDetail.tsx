@@ -1,18 +1,35 @@
-import  { useState } from 'react';
-import { Menu, Edit, ChevronDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import {  Edit, ChevronDown } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const AccountDetail = () => {
+  const { user } = useAuth();
+
   const [formData, setFormData] = useState({
-    fullName: 'John Alexander Smith',
-    email: 'johnsmith@email.com',
-    phone: '+000 (000) 000-0000',
-    dateOfBirth: '00/00/0000',
-    city: 'Input City',
-    zipCode: '00000',
-    country: 'Input Country'
+    fullName: '',
+    email: '',
+    phone: '',
+    dateOfBirth: '',
+    city: '',
+    zipCode: '',
+    country: ''
   });
 
   const [editingField, setEditingField] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        fullName: user.name || user.displayname || 'User Name',
+        email: user.email || '',
+        phone: user.phone || '+000 (000) 000-0000',
+        dateOfBirth: user.dateOfBirth || '00/00/0000',
+        city: user.city || 'Input City',
+        zipCode: user.zipCode || '00000',
+        country: user.country || 'Input Country'
+      });
+    }
+  }, [user]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
