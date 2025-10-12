@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getLeaderboard } from '../api/leaderboard',
+import { getLeaderboard } from '../api/leaderboard'
 import { Trophy, Calendar, BarChart3, Zap, Medal, Flame, RefreshCw } from 'lucide-react';
 
 const Leaderboard = () => {
