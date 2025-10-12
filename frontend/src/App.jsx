@@ -7,14 +7,17 @@ import Home from './pages/HomePage';
 
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
+import AccountDetail from './pages/AccountDetail';
 
 import Dashboard from './pages/DashboardPage';
 import Goals from './pages/GoalsPage';
 import Leaderboard from './pages/LeaderboardPage';
+import Streak from './pages/SteakPage';
 
 import Causes from './pages/CausesPage';
 import Donations from './pages/DonationPage';
 import Organizations from './pages/OrganizationPage';
+import Success from './pages/SuccessPage';
 
 function App() {
   return (
@@ -32,6 +35,16 @@ function App() {
             <Route path="dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="account" element={
+              <ProtectedRoute>
+                <AccountDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="steak" element={
+              <ProtectedRoute>
+                <Streak />
               </ProtectedRoute>
             } />
             <Route path="goals" element={
@@ -57,6 +70,11 @@ function App() {
             <Route path="organizations" element={
               <ProtectedRoute>
                 <Organizations />
+              </ProtectedRoute>
+            } />
+            <Route path="success" element={
+              <ProtectedRoute>
+                <Success />
               </ProtectedRoute>
             } />
           </Route>

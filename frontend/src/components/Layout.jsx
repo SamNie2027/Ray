@@ -1,21 +1,18 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
-// import Footer from './Footer';
+import Footer from './Footer';
 
 function Layout() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
-  // Only show footer on homepage, profile, terms and conditions and billing pages
-  const showFooter = isHomePage
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
         <Outlet />
       </main>
-      {/* {showFooter && <Footer />} */}
+      {isHomePage && <Footer />}
     </div>
   );
 }
