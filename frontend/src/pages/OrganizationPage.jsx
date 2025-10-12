@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ProgressTracker from '../components/ProgressTracker';
+
+import { getOrganizations } from '../api/organization';
 
 const Organization = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const selectedCause = location.state?.selectedCause;
   const [selectedOrganization, setSelectedOrganization] = useState(null);
+  // const [organizations, setOrganizations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Hard coded organization - if backend has no image
   const organizations = [
     {
       id: 1,
@@ -52,6 +58,25 @@ const Organization = () => {
       description: 'Job training and employment services'
     }
   ];
+
+  // Dynamic Organization fetching 
+  // useEffect(() => {
+  //   fetchOrganizations();
+  // }, []);
+
+  // const fetchOrganizations = async () => {
+  //   try {
+  //     setLoading(true);
+  //     setError(null);
+  //     const data = await getOrganizations(20); // Get more organizations
+  //     setOrganizations(data);
+  //   } catch (err) {
+  //     setError('Failed to load organizations');
+  //     console.error('Error fetching organizations:', err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleOrganizationSelect = (organization) => {
     setSelectedOrganization(organization);
